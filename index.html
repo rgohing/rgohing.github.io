@@ -1,7 +1,1996 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CDS Intelligence - AI Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+	<style>
+	* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #0078D4;
+    --primary-hover: #106EBE;
+    --secondary-color: #50E6FF;
+    --background: #F5F5F5;
+    --surface: #FFFFFF;
+    --text-primary: #323130;
+    --text-secondary: #605E5C;
+    --border-color: #E1DFDD;
+    --user-message-bg: #0078D4;
+    --assistant-message-bg: #F3F2F1;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: var(--background);
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-text {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10B981;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.status-text {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    overflow-y: auto;
+    position: relative;
+}
+
+/* Welcome Screen */
+.welcome-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100%;
+    padding: 40px;
+}
+
+.welcome-content {
+    max-width: 800px;
+    text-align: center;
+}
+
+.welcome-content h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.welcome-content h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 16px;
+}
+
+.tagline {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-bottom: 48px;
+}
+
+.landing-logo {
+    max-width: 200px;
+    height: auto;
+    margin-bottom: 24px;
+    border: 4px solid var(--primary-color);
+    border-radius: 40px;
+    padding: 12px;
+    box-shadow: 0 0 20px rgba(0, 120, 212, 0.4), 0 0 40px rgba(0, 120, 212, 0.2);
+    animation: logoGlow 3s ease-in-out infinite;
+    background: linear-gradient(145deg, #ffffff, #f0f8ff);
+}
+
+@keyframes logoGlow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(0, 120, 212, 0.4), 0 0 40px rgba(0, 120, 212, 0.2);
+        border-color: var(--primary-color);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(0, 120, 212, 0.6), 0 0 60px rgba(0, 120, 212, 0.3), 0 0 80px rgba(80, 230, 255, 0.2);
+        border-color: var(--secondary-color);
+    }
+}
+
+/* Mode Selection */
+.mode-selection {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.mode-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 32px;
+    background: var(--surface);
+    border: 3px solid var(--border-color);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.mode-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-4px);
+}
+
+/* Landing page specific button sizing */
+#landingPage .mode-selection {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+#landingPage .mode-card {
+    min-height: 250px;
+    max-height: 250px;
+    width: 100%;
+    min-width: 0;
+}
+
+/* Choice screen specific button sizing */
+#choiceScreen .mode-selection {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 100%;
+    gap: 32px;
+    padding: 0 40px;
+}
+
+#choiceScreen .mode-card {
+    width: 100%;
+    min-height: 400px;
+    max-height: 400px;
+}
+
+.mode-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+}
+
+.mode-info h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.mode-info p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+.feature-list {
+    list-style: none;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+}
+
+.feature-list li {
+    font-size: 14px;
+    color: var(--text-primary);
+    padding: 8px 0;
+    padding-left: 24px;
+    position: relative;
+}
+
+.feature-list li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Mailbox Intelligence Interface */
+.mailbox-interface {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.mailbox-nav {
+    display: flex;
+    gap: 8px;
+    padding: 16px 24px;
+    background: var(--surface);
+    border-bottom: 2px solid var(--border-color);
+    overflow-x: auto;
+}
+
+.nav-btn {
+    padding: 10px 20px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.nav-btn:hover {
+    background: var(--assistant-message-bg);
+    color: var(--text-primary);
+}
+
+.nav-btn.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.mailbox-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+}
+
+.mailbox-tab {
+    display: none;
+}
+
+.mailbox-tab.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Dashboard Widgets */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.widget {
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+}
+
+.widget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.widget-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.widget-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+}
+
+.widget-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.stat-row:last-child {
+    border-bottom: none;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.stat-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Email List */
+.email-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.email-item {
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.email-item:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow);
+}
+
+.email-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 8px;
+}
+
+.email-category {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.email-category.urgent {
+    background: #FEE2E2;
+    color: #DC2626;
+}
+
+.email-category.deployment {
+    background: #DBEAFE;
+    color: #2563EB;
+}
+
+.email-category.question {
+    background: #FEF3C7;
+    color: #D97706;
+}
+
+.email-category.feedback {
+    background: #D1FAE5;
+    color: #059669;
+}
+
+.email-subject {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.email-from {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.email-preview {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.email-meta {
+    display: flex;
+    gap: 16px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color);
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* Log Analysis */
+.log-entry {
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    border-left: 4px solid var(--primary-color);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.log-entry.error {
+    border-left-color: #DC2626;
+}
+
+.log-entry.warning {
+    border-left-color: #D97706;
+}
+
+.log-entry.success {
+    border-left-color: #059669;
+}
+
+.log-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.log-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.log-time {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.log-summary {
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.log-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.log-btn {
+    padding: 6px 12px;
+    border: 1px solid var(--border-color);
+    background: var(--surface);
+    border-radius: 6px;
+    font-size: 12px;
+    color: var(--primary-color);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.log-btn:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-color);
+    color: white;
+}
+
+/* Insights */
+.insight-card {
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.insight-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.insight-icon {
+    font-size: 32px;
+}
+
+.insight-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.insight-content {
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+.insight-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.insight-btn {
+    padding: 8px 16px;
+    border: none;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.insight-btn:hover {
+    background: var(--primary-hover);
+}
+
+.insight-btn.secondary {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.insight-btn.secondary:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+/* Chat Interface */
+.chat-interface {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.doc-header {
+    padding: 16px 24px;
+    background: var(--surface);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.doc-header h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+.quick-suggestions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.quick-btn {
+    padding: 6px 12px;
+    border: 1px solid var(--border-color);
+    background: var(--surface);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.quick-btn:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-color);
+    color: white;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 24px;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    overflow-y: auto;
+}
+
+.message {
+    display: flex;
+    gap: 12px;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message.user {
+    flex-direction: row-reverse;
+}
+
+.message-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 20px;
+}
+
+.message.user .message-avatar {
+    background: var(--primary-color);
+    color: white;
+}
+
+.message.assistant .message-avatar {
+    background: var(--assistant-message-bg);
+}
+
+.message-content {
+    max-width: 70%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.message-bubble {
+    padding: 16px;
+    border-radius: 12px;
+    line-height: 1.6;
+}
+
+.message.user .message-bubble {
+    background: var(--user-message-bg);
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+.message.assistant .message-bubble {
+    background: var(--assistant-message-bg);
+    color: var(--text-primary);
+    border-bottom-left-radius: 4px;
+}
+
+.message-sources {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--primary-color);
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+.source-link:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-color);
+    color: white;
+}
+
+.typing-indicator {
+    display: flex;
+    gap: 6px;
+    padding: 16px;
+}
+
+.typing-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--text-secondary);
+    animation: typing 1.4s infinite;
+}
+
+.typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing {
+    0%, 60%, 100% {
+        transform: translateY(0);
+        opacity: 0.7;
+    }
+    30% {
+        transform: translateY(-10px);
+        opacity: 1;
+    }
+}
+
+/* Input Container */
+.input-container {
+    padding: 16px 24px;
+    background: var(--surface);
+    border-top: 1px solid var(--border-color);
+}
+
+.input-controls {
+    max-width: 900px;
+    margin: 0 auto 12px;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.back-button:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.input-wrapper {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+#userInput {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 15px;
+    font-family: inherit;
+    resize: none;
+    max-height: 120px;
+    overflow-y: auto;
+    transition: border-color 0.2s ease;
+}
+
+#userInput:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.send-button {
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 12px;
+    background: var(--primary-color);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.send-button:hover:not(:disabled) {
+    background: var(--primary-hover);
+    transform: scale(1.05);
+}
+
+.send-button:disabled {
+    background: var(--border-color);
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.input-footer {
+    max-width: 900px;
+    margin: 8px auto 0;
+    text-align: center;
+}
+
+.info-text {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        height: 100vh;
+    }
+
+    .welcome-content h1 {
+        font-size: 24px;
+    }
+
+    .welcome-content h2 {
+        font-size: 20px;
+    }
+
+    .mode-selection {
+        grid-template-columns: 1fr;
+    }
+
+    .mode-card {
+        padding: 24px;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .mailbox-nav {
+        padding: 12px 16px;
+    }
+
+    .mailbox-content {
+        padding: 16px;
+    }
+
+    .message-content {
+        max-width: 85%;
+    }
+
+    .chat-messages {
+        padding: 16px;
+    }
+
+    .input-container {
+        padding: 12px 16px;
+    }
+
+    .doc-header {
+        padding: 12px 16px;
+    }
+
+    .quick-suggestions {
+        overflow-x: auto;
+    }
+}
+
+	</style>
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHsub Pages.</p>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="32" height="32" rx="6" fill="#0078D4"/>
+                    <path d="M8 16L14 10L20 16L14 22L8 16Z" fill="white"/>
+                    <path d="M14 10L20 16L24 12L18 6L14 10Z" fill="white" opacity="0.7"/>
+                </svg>
+                <span class="logo-text">CDS Intelligence</span>
+            </div>
+            <div class="status">
+                <span class="status-indicator"></span>
+                <span class="status-text">AI Assistant Ready</span>
+            </div>
+        </header>
+
+        <!-- Main content -->
+        <div class="main-content">
+            <!-- Landing Page -->
+            <div id="landingPage" class="welcome-screen">
+                <div class="welcome-content">
+                    <img src="confi.png" alt="CDS Logo" class="landing-logo">
+                    <h1>Configuration Deployment Service</h1>
+                    <h2>AI Intelligence Platform</h2>
+                    <p class="tagline">Automated mailbox monitoring, log analysis, and documentation assistance</p>
+                    
+                    <div class="mode-selection">
+                        <button class="mode-card" id="stakeholderBtn">
+                            <div class="mode-icon">👥</div>
+                            <div class="mode-info">
+                                <h4>CDS Team|Stakeholder|Configurator</h4>
+                                <p>Direct access to Documentation Intelligence</p>
+                            </div>
+                        </button>
+                        
+                        <button class="mode-card" id="cdsTeamBtn">
+                            <div class="mode-icon">🛠️</div>
+                            <div class="mode-info">
+                                <h4>CDS Team</h4>
+                                <p>Choose between Mailbox or Documentation Intelligence</p>
+                            </div>
+                        </button>
+                        
+                        <button class="mode-card" id="readmeBtn">
+                            <div class="mode-icon">📄</div>
+                            <div class="mode-info">
+                                <h3>README</h3>
+                                <p>View documentation and user guide</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CDS Team Choice Screen -->
+            <div id="choiceScreen" class="welcome-screen hidden">
+                <div class="welcome-content">
+                    <h1>CDS Team Portal</h1>
+                    <h2>Select Intelligence Mode</h2>
+                    <p class="tagline">Choose the tool you need</p>
+                    
+                    <div class="mode-selection">
+                        <button class="mode-card" id="mailboxModeBtn">
+                            <div class="mode-icon">📧</div>
+                            <div class="mode-info">
+                                <h3>Mailbox Intelligence</h3>
+                                <p>Monitor configuration.deployment@simcorp.com</p>
+                                <ul class="feature-list">
+                                    <li>Email categorization & prioritization</li>
+                                    <li>Deployment log analysis</li>
+                                    <li>Error summarization & pattern learning</li>
+                                    <li>Auto-draft responses & FAQ suggestions</li>
+                                </ul>
+                            </div>
+                        </button>
+                        
+                        <button class="mode-card" id="docModeBtn">
+                            <div class="mode-icon">📚</div>
+                            <div class="mode-info">
+                                <h3>Documentation Intelligence</h3>
+                                <p>Interactive documentation assistant</p>
+                                <ul class="feature-list">
+                                    <li>Conversational DevOps Wiki access</li>
+                                    <li>Step-by-step deployment guidance</li>
+                                    <li>Best practices & troubleshooting</li>
+                                    <li>Quick answers with source citations</li>
+                                </ul>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mailbox Intelligence Interface -->
+            <div id="mailboxInterface" class="mailbox-interface hidden">
+                <div class="mailbox-nav">
+                    <button class="nav-btn active" data-tab="dashboard">📊 Dashboard</button>
+                    <button class="nav-btn" data-tab="emails">📧 Email Inbox</button>
+                    <button class="nav-btn" data-tab="logs">📄 Log Analysis</button>
+                    <button class="nav-btn" data-tab="insights">🔍 Insights</button>
+                </div>
+                
+                <div class="mailbox-content">
+                    <div id="dashboard" class="mailbox-tab active">
+                        <!-- Dashboard content -->
+                    </div>
+                    <div id="emails" class="mailbox-tab">
+                        <!-- Emails content -->
+                    </div>
+                    <div id="logs" class="mailbox-tab">
+                        <!-- Logs content -->
+                    </div>
+                    <div id="insights" class="mailbox-tab">
+                        <!-- Insights content -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Documentation Chat Interface -->
+            <div id="chatInterface" class="chat-interface hidden">
+                <div class="doc-header">
+                    <h3>📚 Documentation Assistant</h3>
+                    <div class="quick-suggestions">
+                        <button class="quick-btn" data-question="How do I deploy a new package?">📦 Deploy Package</button>
+                        <button class="quick-btn" data-question="What is the approval flow?">✅ Approval Flow</button>
+                        <button class="quick-btn" data-question="Troubleshoot failed deployment">🔧 Troubleshoot</button>
+                    </div>
+                </div>
+                <div id="chatMessages" class="chat-messages">
+                    <!-- Messages will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="input-container">
+            <div class="input-controls">
+                <button id="backButton" class="back-button hidden">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 10H5M5 10L10 15M5 10L10 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Back to Home
+                </button>
+            </div>
+            <div class="input-wrapper" id="chatInputWrapper">
+                <textarea 
+                    id="userInput" 
+                    placeholder="Ask about CDS deployment, configuration, or workflows..." 
+                    rows="1"
+                ></textarea>
+                <button id="sendButton" class="send-button" disabled>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2 10L18 2L10 18L8 11L2 10Z" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="input-footer">
+                <span class="info-text">Powered by Microsoft Agent Framework • Monitoring: configuration.deployment@simcorp.com</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
+<script>
+// CDS Intelligence Platform - Hackathon Demo
+// Dual-mode: Mailbox Intelligence + Documentation Intelligence
+
+// Application State
+let currentMode = null; // 'mailbox' or 'documentation'
+let isTyping = false;
+
+// DOM Elements
+const welcomeScreen = document.getElementById('welcomeScreen');
+const mailboxInterface = document.getElementById('mailboxInterface');
+const chatInterface = document.getElementById('chatInterface');
+const chatMessages = document.getElementById('chatMessages');
+const userInput = document.getElementById('userInput');
+const sendButton = document.getElementById('sendButton');
+const backButton = document.getElementById('backButton');
+const landingPage = document.getElementById('landingPage');
+const choiceScreen = document.getElementById('choiceScreen');
+const stakeholderBtn = document.getElementById('stakeholderBtn');
+const cdsTeamBtn = document.getElementById('cdsTeamBtn');
+const readmeBtn = document.getElementById('readmeBtn');
+const mailboxModeBtn = document.getElementById('mailboxModeBtn');
+const docModeBtn = document.getElementById('docModeBtn');
+const chatInputWrapper = document.getElementById('chatInputWrapper');
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    // Landing page buttons
+    stakeholderBtn.addEventListener('click', () => {
+        landingPage.classList.add('hidden');
+        switchMode('documentation');
+    });
+    
+    cdsTeamBtn.addEventListener('click', () => {
+        landingPage.classList.add('hidden');
+        choiceScreen.classList.remove('hidden');
+        backButton.classList.remove('hidden');
+    });
+    
+    readmeBtn.addEventListener('click', () => {
+        window.open('README.pdf', '_blank');
+    });
+
+    // Mode selection buttons
+    mailboxModeBtn.addEventListener('click', () => {
+        choiceScreen.classList.add('hidden');
+        switchMode('mailbox');
+    });
+    
+    docModeBtn.addEventListener('click', () => {
+        choiceScreen.classList.add('hidden');
+        switchMode('documentation');
+    });
+
+    // Back button
+    backButton.addEventListener('click', goHome);
+
+    // Chat functionality
+    userInput.addEventListener('input', () => {
+        userInput.style.height = 'auto';
+        userInput.style.height = Math.min(userInput.scrollHeight, 120) + 'px';
+        sendButton.disabled = userInput.value.trim() === '';
+    });
+
+    userInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+
+    sendButton.addEventListener('click', sendMessage);
+
+    // Quick suggestion buttons
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('quick-btn')) {
+            const question = e.target.dataset.question;
+            userInput.value = question;
+            sendMessage();
+        }
+    });
+
+    // Mailbox navigation
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('nav-btn')) {
+            const tab = e.target.dataset.tab;
+            switchMailboxTab(tab);
+        }
+    });
+
+    // Interactive button handlers
+    document.addEventListener('click', (e) => {
+        const button = e.target;
+        
+        // View Full Log button
+        if (button.textContent === 'View Full Log' || (button.classList.contains('log-btn') && button.textContent.includes('View Full Log'))) {
+            const logWindow = window.open('', '_blank', 'width=600,height=400');
+            logWindow.document.write(`
+                <html>
+                <head><title>Full Error Log</title></head>
+                <body style="font-family: Arial, sans-serif; padding: 20px; line-height: 1.6;">
+                    <h2>Complete Error Log</h2>
+                    <p><strong>Error:</strong> NullReferenceException in ConfigurationManager.ProcessPackage()</p>
+                    <p><strong>Stack Trace:</strong> The deployment package contains an invalid reference to source.json.mapping field.</p>
+                    <p><strong>Timestamp:</strong> 2026-02-22 14:35:22 UTC</p>
+                    <p><strong>Environment:</strong> Production - Client AXAFR</p>
+                    <p><strong>Recommendation:</strong> Verify the JSON structure and ensure all required fields are present.</p>
+                </body>
+                </html>
+            `);
+        }
+        
+        // Similar Issues button
+        if (button.textContent === 'Similar Issues' || (button.classList.contains('log-btn') && button.textContent.includes('Similar Issues'))) {
+            const issuesWindow = window.open('', '_blank', 'width=600,height=400');
+            issuesWindow.document.write(`
+                <html>
+                <head><title>Similar Issues</title></head>
+                <body style="font-family: Arial, sans-serif; padding: 20px; line-height: 1.6;">
+                    <h2>Similar Issues Found</h2>
+                    <ul>
+                        <li><strong>Issue #1234:</strong> Invalid source.json mapping - RESOLVED (2026-01-15)</li>
+                        <li><strong>Issue #1156:</strong> ConfigurationManager null reference - RESOLVED (2025-12-20)</li>
+                        <li><strong>Issue #1089:</strong> Package validation error - RESOLVED (2025-11-05)</li>
+                    </ul>
+                    <p><strong>Common Resolution:</strong> Update package definition schema and validate JSON structure before deployment.</p>
+                </body>
+                </html>
+            `);
+        }
+        
+        // Draft Response button
+        if (button.textContent === 'Draft Response' || (button.classList.contains('log-btn') && button.textContent.includes('Draft Response'))) {
+            const subject = 'RE: Deployment Error - Invalid source.json';
+            const body = `Hi Team,%0D%0A%0D%0AThank you for reporting this deployment issue.%0D%0A%0D%0AWe have identified the root cause as an invalid reference in the source.json.mapping field. This is a common configuration issue that occurs when the package structure doesn't match the expected schema.%0D%0A%0D%0ARecommended Resolution:%0D%0A1. Verify the JSON structure in your package definition%0D%0A2. Ensure all required fields (mapping, source, target) are present%0D%0A3. Run the package validator before redeployment%0D%0A%0D%0APlease let us know if you need further assistance.%0D%0A%0D%0ABest regards,%0D%0ACDS Team`;
+            window.location.href = `mailto:?subject=${subject}&body=${body}`;
+        }
+        
+        // Generic action buttons (insight buttons)
+        if (button.classList.contains('insight-btn')) {
+            const actionText = button.textContent;
+            const actionWindow = window.open('', '_blank', 'width=500,height=300');
+            actionWindow.document.write(`
+                <html>
+                <head><title>${actionText}</title></head>
+                <body style="font-family: Arial, sans-serif; padding: 20px; line-height: 1.6;">
+                    <h2>${actionText}</h2>
+                    <p>Description or action goes here.</p>
+                    <p style="color: #666; font-style: italic;">This action would typically perform: ${actionText}</p>
+                </body>
+                </html>
+            `);
+        }
+    });
+
+    // Initialize mailbox dashboard
+    initializeMailboxDashboard();
+});
+
+// Mode Switching
+function switchMode(mode) {
+    currentMode = mode;
+    landingPage.classList.add('hidden');
+    choiceScreen.classList.add('hidden');
+    backButton.classList.remove('hidden');
+
+    if (mode === 'mailbox') {
+        mailboxInterface.classList.remove('hidden');
+        chatInterface.classList.add('hidden');
+        chatInputWrapper.classList.add('hidden');
+        renderMailboxDashboard();
+    } else if (mode === 'documentation') {
+        chatInterface.classList.remove('hidden');
+        mailboxInterface.classList.add('hidden');
+        chatInputWrapper.classList.remove('hidden');
+        userInput.focus();
+    }
+}
+
+function goHome() {
+    currentMode = null;
+    landingPage.classList.remove('hidden');
+    choiceScreen.classList.add('hidden');
+    mailboxInterface.classList.add('hidden');
+    chatInterface.classList.add('hidden');
+    backButton.classList.add('hidden');
+    chatInputWrapper.classList.add('hidden');
+    
+    // Clear chat messages
+    chatMessages.innerHTML = '';
+    userInput.value = '';
+}
+
+// Mailbox Tab Switching
+function switchMailboxTab(tabName) {
+    // Update nav buttons
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.tab === tabName) {
+            btn.classList.add('active');
+        }
+    });
+
+    // Update tabs
+    document.querySelectorAll('.mailbox-tab').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    document.getElementById(tabName).classList.add('active');
+
+    // Load tab content
+    switch(tabName) {
+        case 'dashboard':
+            renderMailboxDashboard();
+            break;
+        case 'emails':
+            renderEmailList();
+            break;
+        case 'logs':
+            renderLogAnalysis();
+            break;
+        case 'insights':
+            renderInsights();
+            break;
+    }
+}
+
+// ===== MAILBOX INTELLIGENCE DATA & FUNCTIONS =====
+
+const mailboxData = {
+    stats: {
+        todayEmails: 47,
+        pendingResponses: 12,
+        logsAnalyzed: 23,
+        issuesDetected: 8,
+        avgResponseTime: "2.3 hours",
+        automationRate: "68%"
+    },
+    emails: [
+        {
+            id: 1,
+            from: "john.smith@client.com",
+            subject: "Deployment Failed - PROD Environment",
+            category: "urgent",
+            preview: "Hi CDS Team, our production deployment failed at 14:30 with error code XMGR-5043. The package validation passed but deployment to PROD threw an exception...",
+            time: "10 minutes ago",
+            aiSuggestion: "Invalid JSON data detected in source.json. Recommend rollback and re-validation."
+        },
+        {
+            id: 2,
+            from: "sarah.jones@partner.com",
+            subject: "Question: Approval Process Timeline",
+            category: "question",
+            preview: "Hello, I submitted a package for approval 3 days ago but haven't received any updates. What's the typical timeline for approval in TEST environment?",
+            time: "1 hour ago",
+            aiSuggestion: "Standard response: TEST approval typically takes 24-48 hours. Follow up with approval team."
+        },
+        {
+            id: 3,
+            from: "deployment-system@simcorp.com",
+            subject: "Deployment Success - QAM TEST",
+            category: "deployment",
+            preview: "Automated notification: Package QAM-2024-002 has been successfully deployed to TEST environment. All validation checks passed...",
+            time: "2 hours ago",
+            aiSuggestion: "Auto-categorize as success notification. No response needed."
+        },
+        {
+            id: 4,
+            from: "maria.garcia@customer.com",
+            subject: "Feature Request: Custom Validation Rules",
+            category: "feedback",
+            preview: "We would like to request support for custom validation rules in our CDS packages. Our team has specific requirements...",
+            time: "5 hours ago",
+            aiSuggestion: "Forward to product team. Draft acknowledgment with feature request process."
+        },
+        {
+            id: 5,
+            from: "alex.wong@enterprise.com",
+            subject: "Recurring Timeout Issues During Deployment",
+            category: "urgent",
+            preview: "For the past week, we've been experiencing timeout issues during deployment. The logs show connection refused errors...",
+            time: "1 day ago",
+            aiSuggestion: "Known issue detected. Similar pattern seen 3 times this week. Suggest infrastructure review."
+        }
+    ],
+    logs: [
+        {
+            id: 1,
+            title: "XMGR: Invalid JSON data",
+            type: "error",
+            time: "2 hours ago",
+            summary: "Package deployment failed due to invalid JSON data between source (v2.3.1) and target environment (v2.3.0). Missing required field 'deploymentMetadata.approvalChain' in target JSON data.",
+            pattern: "Recurring issue (3 occurrences this week)",
+            suggestion: "Recommend environment upgrade or backward-compatible package generation.",
+            affectedClients: ["ClientA PROD", "ClientB PROD"]
+        },
+        {
+            id: 2,
+            title: "Connection Timeout - Azure Service Bus",
+            type: "warning",
+            time: "4 hours ago",
+            summary: "Intermittent connection timeouts detected when communicating with Azure Service Bus. Average latency increased from 150ms to 3500ms during peak hours (13:00-15:00 UTC).",
+            pattern: "New issue (first occurrence)",
+            suggestion: "Monitor service health. Consider implementing retry logic with exponential backoff.",
+            affectedClients: ["Multiple clients"]
+        },
+        {
+            id: 3,
+            title: "Successful Deployment - Optimization Detected",
+            type: "success",
+            time: "6 hours ago",
+            summary: "Package AXAFR-2024-015 deployed successfully in 4 minutes 32 seconds. This is 40% faster than the average deployment time for similar package sizes.",
+            pattern: "Performance improvement",
+            suggestion: "Analyze deployment logs to identify optimization techniques for other packages.",
+            affectedClients: ["AXAFR PROD"]
+        },
+        {
+            id: 4,
+            title: "Missing Dependency Warning",
+            type: "warning",
+            time: "1 day ago",
+            summary: "Deployment package references dependency 'SimCorp.Core.v2.1.5' which is not installed in target environment. Deployment will likely fail at runtime.",
+            pattern: "Common configuration issue",
+            suggestion: "Add pre-deployment dependency check. Update package template with dependency list.",
+            affectedClients: ["QAM TEST"]
+        }
+    ],
+    insights: [
+        {
+            icon: "🔄",
+            title: "Recurring invalid source.json data detected",
+            content: "Analysis of the past 30 days shows that 23% of deployment failures are caused by invalid JSON data. The pattern correlates with clients running older infrastructure versions. Recommend proactive client communication about infrastructure upgrades.",
+            actions: ["Generate Client Report", "Draft Communication", "Schedule Reviews"]
+        },
+        {
+            icon: "📊",
+            title: "FAQ Gap Identified: Approval Timeline Questions",
+            content: "15 emails in the past week asked about approval process timelines. This topic is not covered in the current FAQ. Suggested FAQ entry drafted based on actual response patterns.",
+            actions: ["Review Draft FAQ", "Add to Wiki", "Notify Team"]
+        },
+        {
+            icon: "⚡",
+            title: "Response Time Improvement Opportunity",
+            content: "68% of deployment questions can be answered with template responses. Implementing auto-draft responses could reduce average response time from 2.3 hours to under 30 minutes.",
+            actions: ["Enable Auto-Draft", "Review Templates", "Set Up Monitoring"]
+        },
+        {
+            icon: "🎯",
+            title: "Client Success Pattern: AXAFR",
+            content: "Client AXAFR has achieved 98% deployment success rate over the past quarter. Their package structure and validation approach could serve as best practice template for other clients.",
+            actions: ["Create Best Practice Guide", "Share with Team", "Schedule Knowledge Session"]
+        }
+    ]
+};
+
+function initializeMailboxDashboard() {
+    const dashboard = document.getElementById('dashboard');
+    if (dashboard && !dashboard.hasChildNodes()) {
+        renderMailboxDashboard();
+    }
+}
+
+function renderMailboxDashboard() {
+    const dashboard = document.getElementById('dashboard');
+    dashboard.innerHTML = `
+        <h2 style="margin-bottom: 24px; font-size: 24px; color: var(--text-primary);">
+            📊 Mailbox Intelligence Dashboard
+        </h2>
+        
+        <div class="dashboard-grid">
+            <div class="widget">
+                <div class="widget-header">
+                    <span class="widget-title">📧 Today's Emails</span>
+                </div>
+                <div class="widget-value">${mailboxData.stats.todayEmails}</div>
+                <div class="widget-label">Received in last 24 hours</div>
+            </div>
+            
+            <div class="widget">
+                <div class="widget-header">
+                    <span class="widget-title">⏳ Pending Responses</span>
+                </div>
+                <div class="widget-value">${mailboxData.stats.pendingResponses}</div>
+                <div class="widget-label">Awaiting team action</div>
+            </div>
+            
+            <div class="widget">
+                <div class="widget-header">
+                    <span class="widget-title">📄 Logs Analyzed</span>
+                </div>
+                <div class="widget-value">${mailboxData.stats.logsAnalyzed}</div>
+                <div class="widget-label">Automatic log processing</div>
+            </div>
+            
+            <div class="widget">
+                <div class="widget-header">
+                    <span class="widget-title">⚠️ Issues Detected</span>
+                </div>
+                <div class="widget-value">${mailboxData.stats.issuesDetected}</div>
+                <div class="widget-label">Requiring attention</div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="widget">
+                <div class="widget-header">
+                    <span class="widget-title">📈 Email Categories (Today)</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">🔴 Urgent</span>
+                    <span class="stat-value">8 (17%)</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">🔵 Deployment</span>
+                    <span class="stat-value">22 (47%)</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">🟡 Questions</span>
+                    <span class="stat-value">12 (26%)</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">🟢 Feedback</span>
+                    <span class="stat-value">5 (10%)</span>
+                </div>
+            </div>
+            
+            <div class="widget">
+                <div class="widget-header">
+                    <span class="widget-title">⚡ Performance Metrics</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Avg Response Time</span>
+                    <span class="stat-value">${mailboxData.stats.avgResponseTime}</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Automation Rate</span>
+                    <span class="stat-value">${mailboxData.stats.automationRate}</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Auto-Categorized</span>
+                    <span class="stat-value">94%</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Draft Responses</span>
+                    <span class="stat-value">32 queued</span>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function renderEmailList() {
+    const emailsTab = document.getElementById('emails');
+    
+    const emailsHTML = mailboxData.emails.map(email => `
+        <div class="email-item">
+            <div class="email-header">
+                <span class="email-category ${email.category}">${getCategoryLabel(email.category)}</span>
+                <span style="font-size: 12px; color: var(--text-secondary);">${email.time}</span>
+            </div>
+            <div class="email-subject">${email.subject}</div>
+            <div class="email-from">From: ${email.from}</div>
+            <div class="email-preview">${email.preview}</div>
+            <div class="email-meta">
+                <span>🤖 AI Suggestion: ${email.aiSuggestion}</span>
+            </div>
+        </div>
+    `).join('');
+    
+    emailsTab.innerHTML = `
+        <h2 style="margin-bottom: 24px; font-size: 24px; color: var(--text-primary);">
+            📧 Email Inbox - configuration.deployment@simcorp.com
+        </h2>
+        <div class="email-list">
+            ${emailsHTML}
+        </div>
+    `;
+}
+
+function renderLogAnalysis() {
+    const logsTab = document.getElementById('logs');
+    
+    const logsHTML = mailboxData.logs.map(log => `
+        <div class="log-entry ${log.type}">
+            <div class="log-header">
+                <span class="log-title">${log.title}</span>
+                <span class="log-time">${log.time}</span>
+            </div>
+            <div class="log-summary">${log.summary}</div>
+            <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 8px;">
+                <strong>Pattern:</strong> ${log.pattern}<br>
+                <strong>Affected:</strong> ${log.affectedClients.join(', ')}
+            </div>
+            <div style="padding: 12px; background: #FEF3C7; border-radius: 8px; font-size: 13px; margin-bottom: 12px;">
+                💡 <strong>AI Suggestion:</strong> ${log.suggestion}
+            </div>
+            <div class="log-actions">
+                <button class="log-btn">View Full Log</button>
+                <button class="log-btn">Similar Issues</button>
+                <button class="log-btn">Draft Response</button>
+            </div>
+        </div>
+    `).join('');
+    
+    logsTab.innerHTML = `
+        <h2 style="margin-bottom: 24px; font-size: 24px; color: var(--text-primary);">
+            📄 Deployment Log Analysis
+        </h2>
+        ${logsHTML}
+    `;
+}
+
+function renderInsights() {
+    const insightsTab = document.getElementById('insights');
+    
+    const insightsHTML = mailboxData.insights.map(insight => `
+        <div class="insight-card">
+            <div class="insight-header">
+                <span class="insight-icon">${insight.icon}</span>
+                <span class="insight-title">${insight.title}</span>
+            </div>
+            <div class="insight-content">${insight.content}</div>
+            <div class="insight-actions">
+                ${insight.actions.map(action => `
+                    <button class="insight-btn secondary">${action}</button>
+                `).join('')}
+            </div>
+        </div>
+    `).join('');
+    
+    insightsTab.innerHTML = `
+        <h2 style="margin-bottom: 24px; font-size: 24px; color: var(--text-primary);">
+            🔍 AI-Powered Insights & Recommendations
+        </h2>
+        <p style="margin-bottom: 24px; color: var(--text-secondary);">
+            Based on analysis of emails, deployment logs, and recurring patterns
+        </p>
+        ${insightsHTML}
+    `;
+}
+
+function getCategoryLabel(category) {
+    const labels = {
+        'urgent': '🔴 Urgent',
+        'deployment': '🔵 Deployment',
+        'question': '🟡 Question',
+        'feedback': '🟢 Feedback'
+    };
+    return labels[category] || category;
+}
+
+// ===== DOCUMENTATION INTELLIGENCE =====
+
+const knowledgeBase = {
+    "deploy package": {
+        answer: `**Deploying a New Package in CDS**
+
+To deploy a new package, follow these steps:
+
+1. **Package Preparation**
+   - Ensure your package definition is complete and validated
+   - Review all configuration settings and dependencies
+   - Verify that all required artifacts are included
+
+2. **Deployment Process**
+   - Navigate to the CDS portal and select "Deploy Package"
+   - Choose the target environment (DEV, TEST, or PROD)
+   - Upload your package definition file
+   - Configure environment-specific parameters
+
+3. **Validation & Approval**
+   - The system will perform automated validation checks
+   - Address any validation errors or warnings
+   - Submit for approval if required by your environment
+
+4. **Monitor Deployment**
+   - Track deployment progress in real-time
+   - Review logs for any issues
+   - Verify successful deployment in the target environment
+
+**Important Notes:**
+- Always deploy to DEV/TEST environments before PROD
+- Ensure you have proper permissions for the target environment
+- Back up existing configurations before deployment`,
+        sources: [
+            { title: "User Manual - Deployment", url: "https://dev.azure.com/SimCorpCloud/CDS/_wiki/wikis/CDS.wiki/112794/User-Manual" },
+            { title: "Package Deployment Guide", url: "https://dev.azure.com/SimCorpCloud/CDS/_wiki/wikis/CDS.wiki/112795/Deployment-Guide" }
+        ]
+    },
+    "approval flow": {
+        answer: `**CDS Approval Flow After Export**
+
+The approval process follows a structured workflow:
+
+**1. Export Completion**
+   - Package is exported from source environment
+   - System generates export artifacts and metadata
+   - Export summary is created with all changes
+
+**2. Automated Validation**
+   - JSON validation checks
+   - Dependency verification
+   - Security policy compliance check
+
+**3. Approval Routing**
+   - Notification sent to designated approvers
+   - Approvers review export summary and impact analysis
+   - Comments can be added for clarification
+
+**4. Approval Decision**
+   - **Approved**: Package moves to deployment queue
+   - **Rejected**: Package returns to configurator with feedback
+   - **Pending**: Additional information requested
+
+**5. Post-Approval Actions**
+   - Approved packages are available for deployment
+   - Audit trail is automatically created
+   - Notifications sent to relevant stakeholders
+
+**Typical Timeline:**
+- Automated validation: < 5 minutes
+- Approval review: 2-24 hours (depending on environment)
+- Emergency deployments: Fast-track approval available`,
+        sources: [
+            { title: "Approval Workflow Documentation", url: "https://dev.azure.com/SimCorpCloud/CDS/_wiki/wikis/CDS.wiki/112796/Approval-Flow" },
+            { title: "User Manual - Governance", url: "https://dev.azure.com/SimCorpCloud/CDS/_wiki/wikis/CDS.wiki/112794/User-Manual" }
+        ]
+    },
+    "troubleshoot": {
+        answer: `**Troubleshooting Failed CDS Deployments**
+
+When a deployment fails, follow this systematic approach:
+
+**Step 1: Check Deployment Logs**
+   - Navigate to Deployment History
+   - Review error messages and stack traces
+   - Identify the failure stage (validation, deployment, post-deployment)
+
+**Step 2: Common Issues & Solutions**
+
+🔴 **Validation Errors**
+   - *Invalid JSON data*: Verify package definition matches target environment
+   - *Missing dependencies*: Check all required components are included
+   - *Permission issues*: Confirm proper access rights
+
+🔴 **Deployment Errors**
+   - *Timeout errors*: Check network connectivity and service status
+   - *Conflict errors*: Resolve conflicting configurations in target environment
+   - *Resource constraints*: Verify environment has sufficient resources
+
+🔴 **Post-Deployment Failures**
+   - *Health check failures*: Review service logs and dependencies
+   - *Integration issues*: Verify external system connectivity
+
+**Step 3: Recovery Actions**
+   - Use rollback feature to revert to previous state
+   - Fix identified issues in package definition
+   - Re-run validation before attempting deployment
+   - Contact CDS support team if issue persists
+
+**Best Practices:**
+   - Always test in lower environments first
+   - Enable verbose logging for complex deployments
+   - Maintain rollback plans for critical deployments`,
+        sources: [
+            { title: "Troubleshooting Guide", url: "https://dev.azure.com/SimCorpCloud/CDS/_wiki/wikis/CDS.wiki/112797/Troubleshooting" },
+            { title: "Common Errors & Solutions", url: "https://dev.azure.com/SimCorpCloud/CDS/_wiki/wikis/CDS.wiki/112798/Error-Reference" }
+        ]
+    },
+    "prerequisites": {
+        answer: `**CDS Configuration Prerequisites**
+
+Before starting CDS configuration, ensure the following requirements are met:
+
+**1. Access & Permissions**
+   - Valid SimCorp Cloud account
+   - CDS Configurator role assigned
+   - Access to target environments (DEV/TEST/PROD)
+   - Azure DevOps permissions for documentation access
+
+**2. Technical Requirements**
+   - Supported browser (Chrome, Edge, Firefox - latest versions)
+   - VPN connection to SimCorp network (if required)
+   - .NET SDK 9.x for local development
+   - PowerShell 7.x or later
+
+**3. Knowledge Requirements**
+   - Understanding of SimCorp Dimension configuration
+   - Familiarity with deployment workflows
+   - Basic knowledge of Azure DevOps
+   - CDS training completion (recommended)
+
+**4. Environment Setup**
+   - Environment provisioning completed
+   - Network connectivity verified
+   - Required services and dependencies available
+   - Backup mechanisms in place
+
+**5. Package Requirements**
+   - Valid package definition file
+   - All configuration artifacts prepared
+   - Dependencies documented and available
+   - Testing plan defined
+
+**6. Compliance & Documentation**
+   - Change request approved
+   - Impact analysis completed
+   - Rollback plan documented
+   - Stakeholders notified
+
+**Getting Started:**
+Once prerequisites are met, refer to the onboarding guide in the User Manual for step-by-step configuration instructions.`,
+        sources: [
+            { title: "Prerequisites & Setup", url: "https://dev.azure.com/SimCorpCloud/CDS/_wiki/wikis/CDS.wiki/112799/Prerequisites" },
+            { title: "User Manual - Getting Started", url: "https://dev.azure.com/SimCorpCloud/CDS/_wiki/wikis/CDS.wiki/112794/User-Manual" }
+        ]
+    },
+    "default": {
+        answer: `I can help you with information about the Configuration Deployment Service (CDS). I have access to deployment documentation, user manuals, and workflow guides.
+
+**I can assist with:**
+- Deployment procedures and best practices
+- Approval workflows and governance
+- Troubleshooting common issues
+- Prerequisites and setup requirements
+- Package configuration
+- Environment management
+
+**Popular topics:**
+- How do I deploy a new package?
+- What is the approval flow after export?
+- How do I troubleshoot a failed deployment?
+- What are the prerequisites for CDS configuration?
+
+Feel free to ask any specific questions about CDS deployment and configuration!`,
+        sources: [
+            { title: "CDS User Manual", url: "https://dev.azure.com/SimCorpCloud/CDS/_wiki/wikis/CDS.wiki/112794/User-Manual" }
+        ]
+    }
+};
+
+// Main send message function
+async function sendMessage() {
+    const message = userInput.value.trim();
+    if (!message || isTyping) return;
+
+    // Add user message
+    addMessage(message, 'user');
+
+    // Clear input
+    userInput.value = '';
+    userInput.style.height = 'auto';
+    sendButton.disabled = true;
+
+    // Show typing indicator
+    isTyping = true;
+    const typingId = addTypingIndicator();
+
+    // Simulate AI processing delay
+    await new Promise(resolve => setTimeout(resolve, 1500));
+
+    // Remove typing indicator
+    removeTypingIndicator(typingId);
+
+    // Get and display response
+    const response = getResponse(message);
+    addMessage(response.answer, 'assistant', response.sources);
+
+    isTyping = false;
+    userInput.focus();
+}
+
+// Add message to chat
+function addMessage(content, type, sources = null) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${type}`;
+
+    const avatar = document.createElement('div');
+    avatar.className = 'message-avatar';
+    avatar.textContent = type === 'user' ? '👤' : '🤖';
+
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'message-content';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'message-bubble';
+    
+    // Format markdown-style content
+    bubble.innerHTML = formatMessage(content);
+
+    contentDiv.appendChild(bubble);
+
+    // Add sources if available
+    if (sources && sources.length > 0) {
+        const sourcesDiv = document.createElement('div');
+        sourcesDiv.className = 'message-sources';
+        
+        sources.forEach(source => {
+            const link = document.createElement('a');
+            link.className = 'source-link';
+            link.href = source.url;
+            link.target = '_blank';
+            link.innerHTML = `📄 ${source.title}`;
+            sourcesDiv.appendChild(link);
+        });
+
+        contentDiv.appendChild(sourcesDiv);
+    }
+
+    messageDiv.appendChild(avatar);
+    messageDiv.appendChild(contentDiv);
+    chatMessages.appendChild(messageDiv);
+
+    // Scroll to bottom
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// Format message with basic markdown
+function formatMessage(text) {
+    return text
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        .replace(/^### (.+)$/gm, '<h4>$1</h4>')
+        .replace(/^## (.+)$/gm, '<h3>$1</h3>')
+        .replace(/^# (.+)$/gm, '<h2>$1</h2>')
+        .replace(/^- (.+)$/gm, '<li>$1</li>')
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/^(.+)$/gm, '<p>$1</p>')
+        .replace(/<p><li>/g, '<ul><li>')
+        .replace(/<\/li><\/p>/g, '</li></ul>')
+        .replace(/🔴/g, '<span style="color: #EF4444;">●</span>')
+        .replace(/🟢/g, '<span style="color: #10B981;">●</span>')
+        .replace(/🟡/g, '<span style="color: #F59E0B;">●</span>');
+}
+
+// Add typing indicator
+function addTypingIndicator() {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message assistant';
+    messageDiv.id = 'typing-indicator';
+
+    const avatar = document.createElement('div');
+    avatar.className = 'message-avatar';
+    avatar.textContent = '🤖';
+
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'message-content';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'message-bubble';
+    
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'typing-indicator';
+    typingDiv.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+    
+    bubble.appendChild(typingDiv);
+    contentDiv.appendChild(bubble);
+    messageDiv.appendChild(avatar);
+    messageDiv.appendChild(contentDiv);
+    chatMessages.appendChild(messageDiv);
+
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    return 'typing-indicator';
+}
+
+// Remove typing indicator
+function removeTypingIndicator(id) {
+    const element = document.getElementById(id);
+    if (element) {
+        element.remove();
+    }
+}
+
+// Get response based on message content
+function getResponse(message) {
+    const lowerMessage = message.toLowerCase();
+
+    // Check for keywords
+    if (lowerMessage.includes('deploy') || lowerMessage.includes('package')) {
+        return knowledgeBase["deploy package"];
+    } else if (lowerMessage.includes('approval') || lowerMessage.includes('flow')) {
+        return knowledgeBase["approval flow"];
+    } else if (lowerMessage.includes('troubleshoot') || lowerMessage.includes('failed') || lowerMessage.includes('error')) {
+        return knowledgeBase["troubleshoot"];
+    } else if (lowerMessage.includes('prerequisite') || lowerMessage.includes('requirement') || lowerMessage.includes('setup')) {
+        return knowledgeBase["prerequisites"];
+    } else {
+        return knowledgeBase["default"];
+    }
+}
+
+</script>
 </html>
