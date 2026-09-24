@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Professional profile and resume of Wilfrendo Gohing, Lead Service Delivery Consultant and IT Professional.">
+	<title>Wilfrendo "Renz" Gohing | IT Professional</title>
+	<style>
+		:root {
+			--ink: #14213d;
+			--muted: #53606f;
+			--line: #d8e0ea;
+			--paper: #fbfcfe;
+			--panel: #ffffff;
+			--accent: #0077b6;
+			--accent-strong: #005f8f;
+			--signal: #ffb703;
+			--success: #2a9d8f;
+			--shadow: 0 18px 50px rgba(20, 33, 61, 0.12);
+			--radius: 8px;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		html {
+			scroll-behavior: smooth;
+		}
+
+		body {
+			margin: 0;
+			color: var(--ink);
+			background:
+				linear-gradient(135deg, rgba(0, 119, 182, 0.09), transparent 34%),
+				linear-gradient(315deg, rgba(255, 183, 3, 0.12), transparent 28%),
+				var(--paper);
+			font-family: "Aptos", "Segoe UI", sans-serif;
+			line-height: 1.65;
+		}
+
+		a {
+			color: inherit;
+		}
+
+		.page {
+			width: min(1180px, calc(100% - 32px));
+			margin: 0 auto;
+			padding: 32px 0 56px;
+		}
+
+		.hero {
+			display: grid;
+			grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+			gap: 24px;
+			align-items: stretch;
+			margin-bottom: 24px;
+		}
+
+		.intro,
+		.contact-panel,
+		.section,
+		.timeline-item,
+		.skill-group,
+		.compact-card {
+			background: rgba(255, 255, 255, 0.92);
+			border: 1px solid rgba(216, 224, 234, 0.86);
+			border-radius: var(--radius);
+			box-shadow: var(--shadow);
+		}
+
+		.intro {
+			position: relative;
+			overflow: hidden;
+			padding: clamp(28px, 5vw, 56px);
+		}
+
+		.intro::before {
+			content: "";
+			position: absolute;
+			inset: 0 auto 0 0;
+			width: 8px;
+			background: linear-gradient(180deg, var(--accent), var(--signal));
+		}
+
+		.eyebrow {
+			display: inline-flex;
+			gap: 8px;
+			align-items: center;
+			margin: 0 0 14px;
+			color: var(--accent-strong);
+			font-size: 0.78rem;
+			font-weight: 800;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+		}
+
+		h1,
+		h2,
+		h3 {
+			margin: 0;
+			line-height: 1.15;
+		}
+
+		h1 {
+			max-width: 11ch;
+			font-family: "Bahnschrift", "Aptos Display", sans-serif;
+			font-size: clamp(3rem, 7vw, 6.6rem);
+			font-weight: 800;
+			letter-spacing: 0;
+		}
+
+		.role {
+			max-width: 760px;
+			margin: 18px 0 0;
+			color: var(--muted);
+			font-size: clamp(1.05rem, 2vw, 1.32rem);
+		}
+
+		.hero-metrics {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 10px;
+			margin-top: 26px;
+		}
+
+		.metric {
+			border: 1px solid var(--line);
+			border-radius: 999px;
+			padding: 8px 13px;
+			background: rgba(251, 252, 254, 0.8);
+			font-weight: 700;
+		}
+
+		.contact-panel {
+			display: grid;
+			gap: 16px;
+			padding: 24px;
+			align-content: start;
+		}
+
+		.contact-panel h2,
+		.section h2 {
+			font-family: "Bahnschrift", "Aptos Display", sans-serif;
+			font-size: 1.08rem;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+		}
+
+		.contact-list {
+			display: grid;
+			gap: 11px;
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		.contact-list li {
+			display: grid;
+			grid-template-columns: 30px 1fr;
+			gap: 10px;
+			align-items: start;
+			color: var(--muted);
+			overflow-wrap: anywhere;
+		}
+
+		.icon {
+			display: inline-grid;
+			width: 30px;
+			height: 30px;
+			place-items: center;
+			border-radius: 50%;
+			color: #ffffff;
+			background: var(--accent);
+			font-size: 0.9rem;
+			font-weight: 800;
+		}
+
+		.main-grid {
+			display: grid;
+			grid-template-columns: minmax(0, 0.72fr) minmax(300px, 0.28fr);
+			gap: 24px;
+			align-items: start;
+		}
+
+		.content-stack,
+		.side-stack {
+			display: grid;
+			gap: 24px;
+		}
+
+		.section {
+			padding: clamp(22px, 3vw, 32px);
+		}
+
+		.section-header {
+			display: flex;
+			gap: 14px;
+			align-items: center;
+			margin-bottom: 18px;
+		}
+
+		.section-header::before {
+			content: "";
+			width: 36px;
+			height: 4px;
+			border-radius: 999px;
+			background: var(--signal);
+		}
+
+		.section p:last-child,
+		.timeline-item p:last-child {
+			margin-bottom: 0;
+		}
+
+		.timeline {
+			display: grid;
+			gap: 16px;
+		}
+
+		.timeline-item {
+			padding: 20px;
+			box-shadow: none;
+		}
+
+		.job-top {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			gap: 8px 16px;
+			margin-bottom: 6px;
+		}
+
+		.job-top h3 {
+			font-size: 1.15rem;
+		}
+
+		.date {
+			color: var(--accent-strong);
+			font-weight: 800;
+		}
+
+		.position {
+			margin: 0 0 12px;
+			color: var(--muted);
+			font-weight: 700;
+		}
+
+		ul {
+			margin: 0;
+			padding-left: 1.1rem;
+		}
+
+		li + li {
+			margin-top: 7px;
+		}
+
+		.skills {
+			display: grid;
+			gap: 14px;
+		}
+
+		.skill-group {
+			padding: 16px;
+			box-shadow: none;
+		}
+
+		.skill-group h3,
+		.compact-card h3 {
+			margin-bottom: 8px;
+			font-size: 0.98rem;
+		}
+
+		.tags {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		.tags li {
+			margin: 0;
+			border: 1px solid var(--line);
+			border-radius: 999px;
+			padding: 5px 9px;
+			background: #f6f9fc;
+			color: var(--muted);
+			font-size: 0.9rem;
+			font-weight: 650;
+		}
+
+		.compact-grid {
+			display: grid;
+			gap: 14px;
+		}
+
+		.compact-card {
+			padding: 16px;
+			box-shadow: none;
+		}
+
+		.compact-card p {
+			margin: 0;
+			color: var(--muted);
+		}
+
+		.achievement-list li::marker {
+			color: var(--success);
+		}
+
+		.cert-table {
+			width: 100%;
+			border-collapse: collapse;
+			font-size: 0.92rem;
+		}
+
+		.cert-table th,
+		.cert-table td {
+			border-bottom: 1px solid var(--line);
+			padding: 8px 6px;
+			text-align: left;
+			vertical-align: top;
+		}
+
+		.cert-table th {
+			color: var(--accent-strong);
+			font-size: 0.78rem;
+			letter-spacing: 0.06em;
+			text-transform: uppercase;
+		}
+
+		footer {
+			margin-top: 24px;
+			color: var(--muted);
+			text-align: center;
+			font-size: 0.92rem;
+		}
+
+		@media (max-width: 920px) {
+			.hero,
+			.main-grid {
+				grid-template-columns: 1fr;
+			}
+
+			h1 {
+				max-width: 100%;
+			}
+		}
+
+		@media (max-width: 560px) {
+			.page {
+				width: min(100% - 20px, 1180px);
+				padding-top: 10px;
+			}
+
+			.intro,
+			.contact-panel,
+			.section {
+				padding: 20px;
+			}
+
+			.job-top {
+				display: grid;
+			}
+
+			.metric,
+			.tags li {
+				border-radius: 6px;
+			}
+		}
+
+		@media print {
+			body {
+				background: #ffffff;
+			}
+
+			.page {
+				width: 100%;
+				padding: 0;
+			}
+
+			.intro,
+			.contact-panel,
+			.section,
+			.timeline-item,
+			.skill-group,
+			.compact-card {
+				box-shadow: none;
+				break-inside: avoid;
+			}
+		}
+	</style>
+</head>
+<body>
+	<main class="page">
+		<section class="hero" aria-label="Professional summary">
+			<div class="intro">
+				<p class="eyebrow">Lead Service Delivery Consultant</p>
+				<h1>Wilfrendo "Renz" Gohing</h1>
+				<p class="role">IT professional with 10+ years of experience in service delivery, L2/L3 application support, enterprise systems administration, automation, and client-focused technical operations.</p>
+				<div class="hero-metrics" aria-label="Professional highlights">
+					<span class="metric">L2/L3 Application Support</span>
+					<span class="metric">Azure DevOps &amp; CI/CD</span>
+					<span class="metric">PowerShell Automation</span>
+					<span class="metric">AI Workflow Automation</span>
+				</div>
+			</div>
+
+			<aside class="contact-panel" aria-label="Contact details">
+				<h2>Contact</h2>
+				<ul class="contact-list">
+					<li><span class="icon">P</span><span>+63 951 396 8812</span></li>
+					<li><span class="icon">E</span><a href="mailto:wilfrendo.gohing@gmail.com">wilfrendo.gohing@gmail.com</a></li>
+					<li><span class="icon">in</span><a href="https://www.linkedin.com/in/renz-gohing-a4334bb0">linkedin.com/in/renz-gohing-a4334bb0</a></li>
+					<li><span class="icon">A</span><span>Philippines</span></li>
+				</ul>
+			</aside>
+		</section>
+
+		<section class="main-grid">
+			<div class="content-stack">
+				<section class="section" aria-labelledby="summary-title">
+					<div class="section-header"><h2 id="summary-title">Professional Summary</h2></div>
+					<p>IT professional with 10+ years of experience in service delivery, L2/L3 application support, enterprise systems administration, automation, and client-focused technical operations. Experienced in Data Management, configuration deployments, document management system, production support, incident and problem management, Azure DevOps, CI/CD workflows, PowerShell automation, cloud operations, and AI-powered process improvement using Microsoft Copilot Studio, Power Automate, OpenAI GPT, and Anthropic Claude. Strong background in troubleshooting complex issues, collaborating with development and business teams, improving operational efficiency, and delivering reliable solutions for enterprise and financial environments.</p>
+				</section>
+
+				<section class="section" aria-labelledby="core-title">
+					<div class="section-header"><h2 id="core-title">Core Capabilities</h2></div>
+					<ul class="tags">
+						<li>L2/L3 Application Support</li><li>PowerShell API Development &amp; Automation</li><li>AI-Powered Workflow Automation</li><li>Microsoft Copilot Studio</li><li>Power Automate</li><li>Power Platform</li><li>Production Issue Investigation &amp; Troubleshooting</li><li>Incident, Problem, Request &amp; Change Management</li><li>Enterprise Application &amp; SaaS Support</li><li>Process Optimization &amp; Continuous Improvement</li><li>Technical Documentation &amp; Knowledge Management</li><li>Windows Server</li><li>SQL Server</li><li>IIS</li><li>Active Directory Administration</li><li>Client Implementations &amp; Service Delivery</li><li>SLA-Based Service Request Resolution</li><li>Configuration Deployment &amp; Release Support</li><li>Azure DevOps</li><li>Azure Repos</li><li>Azure Pipelines</li><li>Git Source Control</li><li>Pull Requests</li><li>Code Reviews</li><li>CI/CD Build, Test &amp; Deployment Automation</li><li>OpenAI GPT</li><li>Anthropic Claude</li><li>Large Language Models</li><li>Azure &amp; AWS Cloud Operations Support</li><li>PL/SQL</li><li>XML/XSL</li><li>JSON</li><li>YAML</li><li>Root Cause Analysis</li><li>Proactive Problem Management</li><li>Client Advisory &amp; Stakeholder Management</li><li>Cross-Functional Collaboration with Development Teams</li><li>Training, Mentoring &amp; Team Onboarding</li>
+					</ul>
+				</section>
+
+				<section class="section" aria-labelledby="work-title">
+					<div class="section-header"><h2 id="work-title">Work History</h2></div>
+					<div class="timeline">
+						<article class="timeline-item">
+							<div class="job-top"><h3>SimCorp</h3><span class="date">May 19, 2025 - Current</span></div>
+							<p class="position">Lead Service Delivery Consultant | Taguig City, Philippines</p>
+							<ul>
+								<li>Serve as a primary point of contact for Data Management Solution implementations, client deployments, and service delivery initiatives.</li>
+								<li>Serve as a primary point of contact for Data Management Solution implementations, client deployments, and service delivery initiatives. </li>
+								<li>Provide L2/L3 application support, troubleshooting complex issues, investigating incidents, and resolving service requests within defined SLAs.</li>
+								<li>Spearheaded the development of a tool used to generate different types of report for KPI purposes and monitoring of production tasks. The languages and tools I used to create this tool includes but not limited to: Powershell 7, Typescript (Macro), JSON, Excel Com Object,  Power Automate, Visual Code, and Copilot.</li>
+								<li>Developed Azure File Share Browser, is a PowerShell-based GUI tool that lets you browse, read (list), and download files from the Azure File Share hosted on cloud.</li>
+								<li>Contributed to PowerShell API development initiatives using Azure DevOps, leveraging Azure Repos and Azure Pipelines for source control, CI/CD processes, code commits, push activities, build validation, testing, and deployment automation across multiple environments.</li>
+								<li>Designed and implemented AI-powered automation workflows utilizing OpenAI GPT models, Anthropic Claude, Microsoft Copilot Studio, Power Automate, and the Microsoft Power Platform to streamline operational processes, improve productivity, and enhance knowledge management.</li>
+								<li>Developed intelligent solutions integrating Large Language Models (LLMs), workflow automation, and enterprise systems to reduce manual effort and improve service delivery outcomes.</li>
+								<li>Analyze and diagnose production issues across data management environments, delivering timely and effective technical solutions.</li>
+								<li>Collaborate closely with development teams to combine business and technical expertise when addressing client requirements and system issues.</li>
+								<li>Support and maintain Data Management environments.</li>
+								<li>Lead and contribute to client projects, operational initiatives, and continuous service improvement activities.</li>
+								<li>Build trusted relationships with clients and stakeholders, providing advisory support and ensuring long-term service excellence.</li>
+								<li>Train, mentor, and onboard new team members while promoting knowledge sharing across global teams.</li>
+								<li>Utilize PowerShell, PL/SQL, XML/XSL, JSON, and YAML to automate processes, troubleshoot issues, and support operational efficiency.</li>
+								<li>Support cloud-based operations and services within Azure and AWS environments.</li>
+								<li>Drive operational excellence through automation, proactive problem management, process optimization, and continuous improvement initiatives aligned with business objectives.</li>
+							</ul>
+						</article>
+
+						<article class="timeline-item">
+							<div class="job-top"><h3>Fluor Daniel Inc. - Philippines</h3><span class="date">November 29, 2021 - May 8, 2025</span></div>
+							<p class="position">Senior Enterprise Applications &amp; Systems Administrator, Level 3 Application Support | Alabang, Muntinlupa, Philippines</p>
+							<ul>
+								<li>Provided production support for critical enterprise web applications (SaaS) and environments (Windows Server, Databases)</li>
+								<li>Participated in the incident and problem management processes as a resolver accountable for resolution, root cause analysis, and reporting</li>
+								<li>Ensured that all production changes are processed according to established change management policies and procedures.</li>
+								<li>Interfaced with internal and external business and technical partners and cross functional IT Departments.</li>
+								<li>Foster a knowledge and understanding of clients' and customers' business issues and needs and how IT interrelates.</li>
+								<li>Responsible for implementation of application installations, upgrades, patches, Active Directory maintenance, load testing, performance monitoring and optimization.</li>
+								<li>Define standards and best practices; develop processes and scripts for automating and improving production support tasks.</li>
+								<li>Administration of Windows 2008 operating system (up to latest version), SQL Server 2017 databases (up to latest version), web services, network device configuration, and administration of domain controllers/Active Directory.</li>
+							</ul>
+						</article>
+
+						<article class="timeline-item">
+							<div class="job-top"><h3>JPMorgan Chase &amp; Co.</h3><span class="date">February 10, 2020 - November 18, 2021</span></div>
+							<p class="position">Delivery Analyst | Taguig City, Philippines</p>
+							<ul>
+								<li>Responsible for technical aspects of the web content including scripting, browser compatibility, functionality, coding consistency, versions control, and links.</li>
+								<li>Supported in creating multiple scripts to automate simple-complex tasks for production use using HTML, CSS, Javascript, RegEx, Excel VBA, Excel, Powershell, AutoIt.</li>
+								<li>Assisted team members when volumes are high.</li>
+								<li>Act as a lead for 5 team members.</li>
+								<li>Provided training for team members.</li>
+								<li>Published procedures and guidelines.</li>
+								<li>Created and published communications.</li>
+								<li>Adobe Dreamweaver technical support.</li>
+								<li>Technical support for all repositories.</li>
+								<li>Monitored repositories including P1 issues, upgrades and enhancements.</li>
+							</ul>
+						</article>
+
+						<article class="timeline-item">
+							<div class="job-top"><h3>ANZ Bank</h3><span class="date">December 21, 2018 - February 6, 2020</span></div>
+							<p class="position">Intranet Communications Coordinator | Eastwood, Philippines</p>
+							<ul>
+								<li>Meet daily deadlines to enable staff to conduct their business tasks and support the overall business strategy by publishing content in line with guidelines;</li>
+								<li>Design / Create intranet pages using basic HTML / JavaScript templates and CSS in SharePoint (including designing page layouts, &amp; uploading files.</li>
+								<li>Proactively engage with other members of the intranet team to identify opportunities for content improvement.</li>
+							</ul>
+						</article>
+
+						<article class="timeline-item">
+							<div class="job-top"><h3>ANZ Bank</h3><span class="date">August 21, 2017 - December 14, 2018</span></div>
+							<p class="position">End-User Service Desk Analyst | Eastwood, Philippines</p>
+							<ul>
+								<li>Received recognition for 100% Attendance, received multiple commendation for providing excellent customer service, extra miler awardee for creating automated reports;</li>
+								<li>Providing solutions to Computer application or hardware concerns through Inbound/Outbound calls.</li>
+							</ul>
+						</article>
+
+						<article class="timeline-item">
+							<div class="job-top"><h3>Macquarie Group Ltd.</h3><span class="date">February 13, 2017 - August 07, 2018</span></div>
+							<p class="position">Senior Associate Service Desk Back Office Analyst | Makati, Philippines</p>
+							<ul>
+								<li>Supported internal users in processing their requests:</li>
+								<li>Account Administration;</li>
+								<li>Providing ongoing status information to users;</li>
+								<li>Re-keying of Request &amp; Incidents from the internal system to a 3rd party ticketing system.</li>
+							</ul>
+						</article>
+
+						<article class="timeline-item">
+							<div class="job-top"><h3>Tata Consultancy Services</h3><span class="date">November 25, 2015 - January 27, 2017</span></div>
+							<p class="position">Assistant Systems Engineer | Bonifacio Global City, Philippines</p>
+							<ul>
+								<li>Top 2 Overall Team Performer, Top 1 Team FCR Performer.</li>
+								<li>Provided solutions to Computer application or hardware concerns through different communication channels: Inbound/Outbound calls, E-.mail/Chat Support.</li>
+							</ul>
+						</article>
+
+						<article class="timeline-item">
+							<div class="job-top"><h3>AtoS Information Technology</h3><span class="date">November 18, 2013 - November 20, 2015</span></div>
+							<p class="position">Technical Solutions Specialist | Eastwood, Philippines</p>
+							<ul>
+								<li>Provided solutions to Computer application or hardware concerns through different communication;</li>
+								<li>Created Training/Knowledge Materials &amp; consolidated the artifacts on Team SharePoint. Provided Trainings of Deployment Processes for the new hires;</li>
+								<li>Educated customers on support options, and steps being taken to resolve their issue.</li>
+								<li>In-charge of generating daily productivity report.</li>
+							</ul>
+						</article>
+					</div>
+				</section>
+
+				<section class="section" aria-labelledby="personal-skills-title">
+					<div class="section-header"><h2 id="personal-skills-title">Personal Skills</h2></div>
+					<div class="timeline">
+						<article class="timeline-item">
+							<h3>Collaboration</h3>
+							<ul>
+								<li>Proactively engage with team members to identify opportunities for improvement.</li>
+								<li>Actively seek input from colleagues across teams to improve solutions and decision-making.</li>
+								<li>Identify overlap or dependencies early and coordinate with relevant stakeholders to avoid rework.</li>
+								<li>Share relevant knowledge, lessons learned, and best practices with the wider team without being asked.</li>
+							</ul>
+						</article>
+
+						<article class="timeline-item">
+							<h3>Initiative</h3>
+							<ul>
+								<li>(Personal) Creating powershell scripts to automate basic-complex daily tasks.</li>
+								<li>(Fluor) Spearheaded the development of a powershell tool from Planning, Scripting, Testing, and Documentation. It is a comprehensive tool with user interface that is used to automate numerous tasks of User Administration and Operations Team, the main functionalities of the tool includes but not limited to: read/update/delete any data (e.g System information, User Details, Database table content) from Windows Servers/Active Directory/SQL Server Databases, and web crawl any Live Websites in a single click.</li>
+								<li>(Macquarie) Created an Auto-Fill system to speed up the process of the work flow.</li>
+								<li>(ANZ) As one of the members of Automation Team. We have managed to create an interval automated report using the following: CMS, Excel Macro, Powershell, HTML, Javascript, VDI Task Scheduler.</li>
+								<li>(ANZ) Created a Web-Based application that works like a notepad with various functionalities, e.g list of escalation groups, generate templates, etc.</li>
+								<li>(ANZ) Developed an application that contains processes, and support groups for escalation.</li>
+								<li>(ATOS) Developed a Web based Knowledgebase System together with my Operational Manager and my colleague using HTML, CSS, JavaScript, PHP, MySQL, &amp; SQL Server as the Database.</li>
+								<li>Developed a macro automated excel report to reduce time spent in producing different data format to better understand or identify issues.</li>
+							</ul>
+						</article>
+
+						<article class="timeline-item">
+							<h3>Self-Management</h3>
+							<ul>
+								<li>I work under minimal supervision.</li>
+								<li>Setting short-term and long-term goals to track progress over time.</li>
+								<li>Acknowledging mistakes and working to fix them rather than making excuses.</li>
+								<li>Creating to-do lists, organizing files, and keeping a clean workspace.</li>
+							</ul>
+						</article>
+					</div>
+				</section>
+			</div>
+
+			<aside class="side-stack" aria-label="Resume sidebar">
+				<section class="section" aria-labelledby="skills-title">
+					<div class="section-header"><h2 id="skills-title">Technical Skills</h2></div>
+					<div class="skills">
+						<div class="skill-group">
+							<h3>Operating System</h3>
+							<ul class="tags"><li>Windows Server 2008 R2</li><li>Windows Server 2012 R2</li><li>Windows Server 2016 R2</li><li>Windows 7</li><li>Windows 10</li><li>Ubuntu</li></ul>
+						</div>
+						<div class="skill-group">
+							<h3>Service Management</h3>
+							<ul class="tags"><li>ITIL 2011 Foundation</li><li>Incident Management</li><li>Request Fulfillment</li><li>Change Management</li><li>Identity Management</li></ul>
+						</div>
+						<div class="skill-group">
+							<h3>Web Technologies</h3>
+							<ul class="tags"><li>Wordpress</li><li>Bootstrap</li><li>HTML</li><li>CSS</li><li>HTML5</li><li>CSS3</li><li>PHP</li><li>jQuery</li><li>AJAX</li><li>JSON jQGrid</li><li>MYSQL</li></ul>
+						</div>
+						<div class="skill-group">
+							<h3>Databases</h3>
+							<ul class="tags"><li>Oracle</li><li>SQL Server</li><li>WAMP/XAMPP</li></ul>
+						</div>
+						<div class="skill-group">
+							<h3>Ticketing Tools</h3>
+							<ul class="tags"><li>Salesforce</li><li>Service Now</li><li>BMC Remedy</li><li>Service Desk Manager (SDM)</li></ul>
+						</div>
+						<div class="skill-group">
+							<h3>Automation Tools</h3>
+							<ul class="tags"><li>LLMs (Open AI - GPT models, Anthropic - Claude models)</li><li>Azure Function</li><li>Power Automate</li><li>Copilot</li><li>CopilotStudio</li><li>Powershell</li><li>Auto It</li><li>Selenium</li><li>VDI Task Scheduler</li></ul>
+						</div>
+						<div class="skill-group">
+							<h3>CRM Tool</h3>
+							<ul class="tags"><li>Change Manager</li></ul>
+						</div>
+						<div class="skill-group">
+							<h3>Application Tools</h3>
+							<ul class="tags"><li>Visual Studio Code</li><li>SimCorp Dimension</li><li>XMGR</li><li>Adobe Analytics</li><li>Microsoft Office</li><li>Active Directory</li><li>SCCM Tool</li><li>Remote Desktop Connection Manager</li><li>IIS</li><li>Team Viewer</li><li>VNC Viewer</li><li>Alteryx</li><li>Microsoft Lync Server</li><li>VMWare vSphere</li><li>Citrix</li><li>CPM</li><li>TSAdmin</li><li>PUTTY</li><li>Command Prompt</li><li>Cyber Ark</li><li>Google Chrome</li><li>Mozilla Firefox</li><li>Internet Explorer</li><li>Torch</li><li>JIRA</li><li>Confluence</li><li>xMatters</li><li>Crowd</li><li>Control-M</li><li>SL Console</li><li>Top Team</li><li>Dreamweaver</li><li>Adobe Photoshop</li><li>Macromedia Animation</li><li>Office 365</li><li>Excel Macro</li><li>DMZ</li><li>Event Viewer</li><li>Microsoft 365</li></ul>
+						</div>
+					</div>
+				</section>
+
+				<section class="section" aria-labelledby="education-title">
+					<div class="section-header"><h2 id="education-title">Education</h2></div>
+					<div class="compact-grid">
+						<article class="compact-card">
+							<h3>Bachelor of Science in Computer Science</h3>
+							<p>St. Joseph College of Bulacan</p>
+							<p>San Jose Patag, Santa Maria Bulacan, Philippines</p>
+							<p>2008 - 2012</p>
+						</article>
+					</div>
+				</section>
+
+				<section class="section" aria-labelledby="achievements-title">
+					<div class="section-header"><h2 id="achievements-title">Achievements</h2></div>
+					<ul class="achievement-list">
+						<li>Most Industrious School Award, 2006.</li>
+						<li>Gold Awardee of 4x4 Sprint Relay</li>
+						<li>Top 2 Overall Team Performer, Top 1 Team FCR Performer.</li>
+						<li>Received recognition for 100% Attendance, received multiple commendation for providing excellent customer service, extra miler awardee for creating automated reports.</li>
+					</ul>
+				</section>
+
+				<section class="section" aria-labelledby="certifications-title">
+					<div class="section-header"><h2 id="certifications-title">Certifications, Training &amp; Seminars Attended</h2></div>
+					<table class="cert-table">
+						<thead><tr><th>Certificate/Training</th><th>Company</th><th>Date</th></tr></thead>
+						<tbody>
+							<tr><td>ITIL4 Foundation</td><td>PeopleCert</td><td>October 7, 2025</td></tr>
+							<tr><td>Scrum Fundamentals with AI Certified</td><td>VMEdu</td><td>June 11, 2025</td></tr>
+							<tr><td>Six Sigma Yellow Belt Certification</td><td>SCRUMstudy</td><td>June 11, 2025</td></tr>
+							<tr><td>Lean Six Sigma White Belt Certification</td><td>The Council for Six Sigma Certification</td><td>June 9, 2025</td></tr>
+							<tr><td>Comprehensive Javascript and jQuery Programming</td><td>Active Learning, Inc</td><td>June 2019</td></tr>
+							<tr><td>Google Analytics_Foundation</td><td>Tata Consultancy Services</td><td>December 2016</td></tr>
+							<tr><td>Joomla, jQuery, Content Management System</td><td>St. Paul University Quezon City, Bocaue Extension</td><td>February 2012</td></tr>
+						</tbody>
+					</table>
+				</section>
+
+				<section class="section" aria-labelledby="interests-title">
+					<div class="section-header"><h2 id="interests-title">Interests</h2></div>
+					<ul class="tags"><li>Gaming</li><li>Sprinting</li><li>Web Development</li><li>Latest Technology Trends</li></ul>
+				</section>
+
+				<section class="section" aria-labelledby="referees-title">
+					<div class="section-header"><h2 id="referees-title">Referees</h2></div>
+					<p>To be provided upon request.</p>
+				</section>
+			</aside>
+		</section>
+
+		<footer>Wilfrendo "Renz" Gohing | IT Professional</footer>
+	</main>
+</body>
+</html>
